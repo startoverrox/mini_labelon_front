@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
+import type { ApiWrapper } from "@/types/apiWrapper";
 import useToastStore from "@/store/toastStore";
 import useUserStore from "@/store/userStore";
 import { getNewAccessToken } from "@/services/authApi";
@@ -47,8 +48,19 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 추가
 api.interceptors.response.use(
-  (response) => {
-    // intercept response
+  (response: AxiosResponse<ApiWrapper>): AxiosResponse<ApiWrapper> => {
+    // Django body를 ApiWrapper 기준으로 재구성하여 response.data에 저장
+    const { success, message, data, errors } = response.data;
+
+    // 원래 response 객체를 유지하면서 data만 재구성
+    response.data = {
+      success,
+      message,
+      data,
+      errors: errors,
+      status: response.status,
+    };
+
     return response;
   },
   async (error) => {
@@ -78,7 +90,23 @@ api.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    // Django wrapper 구조를 기준으로 실패 메시지 변환
+    const responseData = error.response?.data;
+    const formattedError = {
+      success: false,
+      status: error.response?.status,
+      message:
+        responseData?.message ||
+        (responseData?.errors && typeof responseData.errors === "object"
+          ? Object.values(
+              responseData.errors as Record<string, string[]>,
+            )[0]?.[0]
+          : "알 수 없는 오류가 발생했습니다."),
+      data: responseData?.data || null,
+      errors: responseData?.errors || null,
+    };
+
+    return Promise.reject(formattedError);
   },
 );
 
