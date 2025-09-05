@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* reset css */
+@layer base {
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  ul,
+  ol,
+  li {
+    list-style: none;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  address,
+  em {
+    font-style: normal;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  th {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  input,
+  button,
+  select {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+  }
+  table {
+    border-collapse: collapse;
+    border: 0;
+  }
+  table caption {
+    display: none;
+  }
+  fieldset {
+    border: 0;
+  }
+  legend {
+    display: none;
+  }
+}
+
+/* font */
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Thin.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-ExtraLight.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Light.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Regular.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Medium.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-SemiBold.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Bold.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-ExtraBold.woff) format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-display: swap;
+  src: url(src/assets/fonts/Pretendard-Black.woff) format("woff");
+}
+
+/* project style */
+@layer base {
+  body {
+    font-family: "Pretendard", "Malgun Gothic", sans-serif;
+  }
+}
+
+@layer components {
+  .icon-btn {
+    @apply flex items-center gap-1 rounded-md border border-blue-500 px-1 py-0.5 font-bold text-blue-500 hover:bg-blue-50;
+  }
+
+  .icon-span {
+    @apply flex items-center gap-1 py-2 text-sm font-bold;
+  }
+
+  .auth-input-block {
+    @apply flex w-full flex-col items-start justify-center gap-2;
+
+    & > label,
+    & > div > div > label {
+      @apply text-sm font-bold text-gray-500;
+    }
+
+    & > input,
+    & > div > input,
+    & > div > div > input {
+      @apply rounded-md border border-gray-300 p-1 focus:border-sky-500 focus:outline-none;
+    }
+  }
+
+  .table-base {
+    @apply border-collapse text-sm;
+
+    & > thead > tr > th {
+      @apply border border-gray-300 px-3 py-2 font-bold whitespace-nowrap;
+    }
+    & > tbody > tr > td {
+      @apply border border-gray-300 px-3 py-2 text-right whitespace-nowrap;
+    }
+    & > tbody {
+      @apply [&_tr:nth-child(odd)_td]:bg-gray-100;
+    }
+  }
+}
