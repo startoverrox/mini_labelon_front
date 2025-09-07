@@ -30,39 +30,52 @@ export const handleApiResponse = async <T = unknown>(
 
   try {
     const response = await apiCall;
-
-    if (response.success) {
-      // success 처리
-      if (response.message && response.message.length > 0) {
-        setToast({
-          message: response.message,
-          type: "success",
-        });
-      }
-      return {
-        success: true,
-        data: response.data,
-      };
-    } else {
-      // django error 처리
-      const errorMessage = formatErrorsToMessage(response.errors);
-      if (
-        (response.message && response.message.length > 0) ||
-        (errorMessage && errorMessage.length > 0)
-      ) {
-        setToast({
-          message: errorMessage || response.message,
-          type: "error",
-        });
-      }
-      return {
-        success: false,
-      };
+    const { message, data } = response.data as ApiResponse<T>;
+    // success 처리
+    if (message) {
+      setToast({
+        message: message,
+        type: "success",
+      });
     }
+    return {
+      success: true,
+      data: data,
+    };
   } catch (error: unknown) {
     // axios error 처리
     console.error("API call error:", error);
 
+    // axios error 객체에서 Django 응답 데이터 확인
+    if (
+      error &&
+      typeof error === "object" &&
+      "success" in error &&
+      error.success === false
+    ) {
+      // Django에서 보낸 구조화된 오류 응답 처리
+      const errorResponse = error as {
+        success: boolean;
+        message?: string;
+        errors?: Record<string, string[]>;
+      };
+
+      const errorMessage = formatErrorsToMessage(errorResponse.errors);
+      const displayMessage = errorMessage || errorResponse.message;
+
+      if (displayMessage) {
+        setToast({
+          message: displayMessage,
+          type: "error",
+        });
+      }
+
+      return {
+        success: false,
+      };
+    }
+
+    // 실제 네트워크 오류나 기타 오류 처리
     setToast({
       message: "네트워크 오류가 발생했습니다.",
       type: "error",

@@ -16,7 +16,10 @@ const LoginPage: React.FC = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    await signin(email, password);
+    const result = await signin(email, password);
+    if (result.success) {
+      navigate("/");
+    }
   };
 
   return (
