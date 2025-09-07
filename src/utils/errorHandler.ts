@@ -54,14 +54,10 @@ export const handleApiResponse = async <T = unknown>(
       error.success === false
     ) {
       // Django에서 보낸 구조화된 오류 응답 처리
-      const errorResponse = error as {
-        success: boolean;
-        message?: string;
-        errors?: Record<string, string[]>;
-      };
+      const { message, errors } = error as ApiResponse<T>;
 
-      const errorMessage = formatErrorsToMessage(errorResponse.errors);
-      const displayMessage = errorMessage || errorResponse.message;
+      const errorMessage = formatErrorsToMessage(errors);
+      const displayMessage = errorMessage || message;
 
       if (displayMessage) {
         setToast({
