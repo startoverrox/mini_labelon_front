@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.16",
     "axios": "^1.11.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
