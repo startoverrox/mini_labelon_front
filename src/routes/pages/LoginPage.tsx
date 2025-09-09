@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-// import logoImg from "@/assets/images/logo.png";
+import JoinIcon from "@/assets/icons/join.svg?react";
 import PwVisIcon from "@/assets/icons/pw-vis.svg?react";
 import { cn } from "@/utils/cn";
 import { signin } from "@/services/authApi";
@@ -23,68 +23,60 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex w-60 flex-col items-center justify-center gap-2">
-        {/* <img className="w-50 bg-gray-500" src={logoImg} alt="login" /> */}
-        <span className="text-3xl font-bold tracking-tight text-sky-600">
-          MiniLabelon
-        </span>
+    <div className="w-full max-w-[340px]">
+      <div className="mb-[55px] flex flex-col items-center">
+        <JoinIcon className="w-full" />
+        <span className="text-[16px] text-[#666666] ">로그인하세요.</span>
+      </div>
+      <form onSubmit={handleSubmit}>
         <div className="auth-input-block">
-          <label htmlFor="email">아이디</label>
+          <label htmlFor="email">E-mail</label>
           <input
-            className="w-full"
             type="email"
             id="email"
             name="email"
-            placeholder="아이디"
+            placeholder="your@email.com"
             required
           />
         </div>
 
         <div className="auth-input-block">
-          <label htmlFor="password">비밀번호</label>
-          <div className="relative w-full">
-            <input
-              className="w-full pr-8"
-              type={pwVisible ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder="비밀번호"
-              required
+          <label htmlFor="password">Password</label>
+          <input
+            type={pwVisible ? "text" : "password"}
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+          />
+          <button type="button" onClick={() => setPwVisible((prev) => !prev)}>
+            <PwVisIcon
+              className={cn({
+                "opacity-[1]": pwVisible,
+                "opacity-[0.6]": !pwVisible,
+              })}
             />
-            <div className="absolute top-1/2 right-2 -translate-y-1/2">
-              <PwVisIcon
-                className={cn("h-5 w-5 transition-opacity", {
-                  "fill-gray-800": pwVisible,
-                  "fill-gray-500": !pwVisible,
-                })}
-                onClick={() => setPwVisible((prev) => !prev)}
-              />
-            </div>
-          </div>
+          </button>
         </div>
 
-        <button
-          className="w-full rounded-md border bg-sky-500 p-1 text-white hover:bg-sky-600"
-          type="submit"
-        >
-          로그인
+        <button className="auth-btn" type="submit">
+          LOGIN
         </button>
 
-        <div className="flex w-full items-center justify-between gap-2">
-          <span className="text-xs whitespace-nowrap text-gray-500">
-            아직 계정이 없으신가요?
+        <div className="flex w-full items-center justify-between gap-2 px-[20px] text-[14px]">
+          <span className="whitespace-nowrap text-[#666666]">
+            아직 계정이 없나요?
           </span>
           <button
-            className="text-sky-500 underline"
+            className="font-[600] text-[#222222] hover:underline"
             type="button"
             onClick={() => navigate("/register")}
           >
-            회원가입
+            Register
           </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
